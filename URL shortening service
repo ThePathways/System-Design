@@ -88,7 +88,70 @@ Response: { "click_count": 100, "created_at": "2023-01-01T00:00:00Z"
 
 Back of the envelope calculation 
 
-***
+1. User Base and Activity
+Daily Active Users (DAU) : 50,000 Users
+Per User - Average Shortening Requests/Day  : 3 Request/Day
+Per User - Average Redirecting Requests/Day : 5 Requesr/Day
+
+
+2. Request Volume Estimation
+Total Shortening Requests/Day  = 50,000 * 3 = 150,000 Requests/Day
+Total Redirecting Requests/Day = 50,000 * 5 = 250,000 Requests/Day
+
+Total Shortening Requests/Second = 150,000 / (24*60*60)= 150,000 / 86,400 = 1.736 Requests/Second
+Total Redirecting Requests/Second = 250,000 / (24*60*60) = 250,000 / 86,400 = 2.893 Requests/Second
+
+so Total Requests/Second (RPS) = 1.736 Requests/Second + 2.893 Requests/Second = 4.63 Requests/Second
+
+
+3. Database Queries Calculation
+Shortening Requests has 3 queries (insert, select, update)
+Redirecting Request has 2 queries (select, update)
+
+Total Queries Per Second for Shortening Requests = [(1.736 Requests/Second) * 3 queries] = 5.208
+Total Queries Per Second for Redirecting Requests = [(2.893 Requests/Second) * 2 queries] = 5.786
+
+so Total Queries Per Second = 5.208 + 5.786 = 10.994 = 11 Queries/Second
+
+
+4. Latency and Performance
+Shortening Requests has 3 queries
+Redirecting Request has 2 queries
+
+We estimated the latency for each query to be 20 ms.
+We estimated Network Latency of 30 ms.
+*****
+
+
+
+
+
+
+5. Storage Requirements Estimation
+Average URL Length: 100 characters (assume)
+Short URL Length: 10 characters (assume)
+Overhead: 50 bytes (assume)
+
+Total Size per URL = 100+10+50 = 160 bytes
+so Total storage / Day = 160 * Total Requests/day = 160 * [150,000 + 250,000] = 160 * 400,000 = 64,000,000 bytes = 64,000,000 / 1,024,000 = 62.5 MB
+so Total storage / Year = 365 * 160 * 400,000 bytes 
+so Total storage / 5 Year = 5 * 365 * 160 * 400,000 bytes = 114062.5 MB (divide by 1024000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
