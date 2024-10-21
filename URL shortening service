@@ -1,0 +1,104 @@
+1. Requirements
+
+Functional Requirements:
+Accept a long URL and return a shortened URL.
+Redirect users from the shortened URL to the original URL.
+Track metrics such as the number of clicks on the shortened URL.
+Allow users to manage their shortened URLs (e.g., delete, update).
+
+
+Non-Functional Requirements:
+Scalability: The system should handle a large number of requests.
+Availability: The service should be highly available.
+Performance: URL shortening and redirection should be fast (low latency).
+Security: Prevent abuse (e.g., spamming, phishing).
+
+
+2. High-Level Design
+
+Components:
+API Gateway: To handle incoming requests.
+Application Server: To process requests and perform business logic.
+Database: To store original URLs and their corresponding shortened versions.
+Cache: To store frequently accessed URLs for quick redirection.
+Analytics Service: To track and report metrics.
+
+
+3. Detailed Design
+
+Data Model:
+URL Mapping Table:
+id (Primary Key)
+original_url (String)
+shortened_url (String)
+created_at (Timestamp)
+click_count (Integer)
+
+
+Shortening Logic:
+Generate a unique identifier (e.g., base62 encoding) for each URL.
+Map the identifier to the original URL in the database.
+Example: For a long URL like https://example.com/some/long/path, generate a shortened version like https://short.ly/abc123.
+
+
+Redirection Logic:
+When a user accesses a shortened URL, look up the identifier in the database.
+Redirect the user to the original URL.
+
+
+
+4. Scalability and Performance
+
+Techniques:
+Caching: Use an in-memory cache (like Redis) to store frequently accessed URLs to reduce database load.
+Load Balancing: Distribute incoming requests across multiple application servers.
+Database Sharding: Split the database into smaller parts to handle larger datasets.
+
+
+
+5. Security and Compliance
+
+Validation: Validate URLs before storing them to prevent malicious content.
+Rate Limiting: Implement rate limiting to prevent abuse of the service.
+HTTPS: Use HTTPS to encrypt data in transit.
+
+
+
+6. Monitoring and Maintenance
+
+Logging: Implement logging for both successful and failed requests.
+Analytics: Track metrics like the number of clicks and the most popular URLs.
+Health Checks: Regularly check the health of services and databases.
+
+
+
+7. API Endpoints
+
+POST /shorten
+  Request Body: { "original_url": "https://example.com/some/long/path" }
+  Response: { "shortened_url": "https://short.ly/abc123" }
+
+GET /:shortened_url
+  Redirects to the original URL.
+
+GET /stats/:shortened_url
+Response: { "click_count": 100, "created_at": "2023-01-01T00:00:00Z" 
+
+--------------------------------------------------------------------------------------------------------------
+
+Back of the envelope calculation 
+
+***
+
+
+
+
+
+
+
+
+
+
+
+
+
